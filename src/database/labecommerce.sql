@@ -9,15 +9,11 @@ CREATE TABLE users (
     created_at TEXT NOT NULL
 );
 
--- Mostrar tabela users:
-PRAGMA table_info ('users');
-
--- Inserir dados:
+-- Criar um novo user:
 INSERT INTO users (id, name, email, password, created_at)
-VALUES ('u003', 'Jairo', 'ja@gmail.com', 'PASS9512', CURRENT_TIMESTAMP),  ('u001', 'Giovanni', 'g@gmail.com', 'Pass9512', CURRENT_TIMESTAMP),  ('u002', 'Jeferson', 'j@gmail.com', '9512Pass', CURRENT_TIMESTAMP);
--- CURRENT_TIMESTAMP serve para gerar um valor aleatório de acordo com a data e o horário do computador.
+VALUES ('u003', 'Jairo', 'ja@gmail.com', 'PASS9512', CURRENT_TIMESTAMP)
 
--- Selecionar todos os dados:
+-- Mostra todos os usuários:
 SELECT * FROM users;
 
 --Editar tabela pelo id(podemos editar por qualquer atributo porém pelo id é melhor por ser unico):
@@ -25,7 +21,11 @@ UPDATE users
 SET email = 'jaja@gmail.com'
 WHERE id = 'u003';
 
+-- Deleta um usuário pelo id:
 DELETE FROM users WHERE id = 'u003';
+
+
+
 ------------------------Users---------------------------------
 
 CREATE TABLE products (
@@ -36,24 +36,21 @@ CREATE TABLE products (
     image_url TEXT NOT NULL
 );
 
--- Mostrar tabela users:
-PRAGMA table_info ('products');
-
--- Inserir dados:
-INSERT INTO products (id, name, price, description, image_url)
-VALUES ('prod001', 'mouse', 79.99, 'melhor mouse do mercado','image.jpg'), ('prod002', 'monitor', 250.99, 'melhor monitor do mercado','image.jpg'), ('prod003', 'teclado', 120.99, 'melhor teclado do mercado','image.jpg'), ('prod004', 'cabo USB', 25.99, 'melhor usb do mercado','image.jpg'), ('prod005', 'PS5', 3500, 'melhor console do mercado','image.jpg');
-
-
---Inserir dados de um por um:
+--Criar um novo produto:
 INSERT INTO products(id, name, price, description, image_url)
 VALUES('prod003', 'teclado', 120.99, 'melhor teclado do mercado','image.jpg');
 
--- Selecionar todos os dados:
+-- Selecionar todos os products:
 SELECT * FROM products;
+
+-- Retorna a palavra pesquisada
+SELECT * FROM products
+WHERE name LIKE 'gamer%';
 
 --Editar tabela pelo id(podemos editar por qualquer atributo porém pelo id é melhor por ser unico):
 UPDATE products
 SET price = 230
 WHERE id = 'prod003';
 
+-- Deleta o produto pelo id:
 DELETE FROM products WHERE id = 'prod003';
