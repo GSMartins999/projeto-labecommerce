@@ -14,7 +14,8 @@ PRAGMA table_info ('users');
 
 -- Inserir dados:
 INSERT INTO users (id, name, email, password, created_at)
-VALUES ('u003', 'Jairo', 'ja@gmail.com', 'PASS9512','2023-02-08');
+VALUES ('u003', 'Jairo', 'ja@gmail.com', 'PASS9512', CURRENT_TIMESTAMP),  ('u001', 'Giovanni', 'g@gmail.com', 'Pass9512', CURRENT_TIMESTAMP),  ('u002', 'Jeferson', 'j@gmail.com', '9512Pass', CURRENT_TIMESTAMP);
+-- CURRENT_TIMESTAMP serve para gerar um valor aleatório de acordo com a data e o horário do computador.
 
 -- Selecionar todos os dados:
 SELECT * FROM users;
