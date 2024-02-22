@@ -28,6 +28,7 @@ DELETE FROM users WHERE id = 'u003';
 
 ------------------------Users---------------------------------
 
+---Criando tabela products:
 CREATE TABLE products (
     id TEXT PRIMARY KEY UNIQUE, 
     name TEXT NOT NULL, 
@@ -54,3 +55,27 @@ WHERE id = 'prod003';
 
 -- Deleta o produto pelo id:
 DELETE FROM products WHERE id = 'prod003';
+
+
+
+
+---------------------------purchases------------------------------------
+
+
+---Criando tabela purchases:
+CREATE TABLE purchases(
+    id TEXT PRIMARY KEY UNIQUE NOT NULL,
+    total_price REAL NOT NULL,
+    created_at TEXT NOT NULL,
+    buyer TEXT NOT NULL,
+    FOREIGN KEY (buyer) REFERENCES users(id)
+);
+ 
+---Inserindo produtos:
+INSERT INTO purchases(id, total_price, created_at, buyer)
+VALUES('p001', 40, CURRENT_TIMESTAMP, 'u002'), ('p002', 69.99, CURRENT_TIMESTAMP, 'u001'), ('p003', 100, CURRENT_TIMESTAMP, 'u002'), ('p004', 250, CURRENT_TIMESTAMP, 'u001');
+
+---Selecionando os produtos:
+SELECT purchases.id AS idDaCompra, purchases.buyer AS idDoComprador, users.name AS nomeComprador, users.email, purchases.total_price AS valorTotal, purchases.created_at AS dataDaCompra FROM purchases
+INNER JOIN users
+ON purchases.buyer = users.id
