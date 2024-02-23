@@ -35,7 +35,7 @@ INSERT INTO
         id, name, price, description, image_url
     )
 VALUES (
-        'prod003', 'teclado', 120.99, 'melhor teclado do mercado', 'image.jpg'
+        'prod005', 'notebook', 2500, 'melhor notebook do mercado', 'image.jpg'
     );
 
 -- Selecionar todos os products:
@@ -64,16 +64,16 @@ INSERT INTO
         id, total_price, created_at, buyer
     )
 VALUES (
-        'p001', 40, CURRENT_TIMESTAMP, 'u002'
+        'pur001', 40, CURRENT_TIMESTAMP, 'u002'
     ),
     (
-        'p002', 69.99, CURRENT_TIMESTAMP, 'u001'
+        'pur002', 69.99, CURRENT_TIMESTAMP, 'u001'
     ),
     (
-        'p003', 100, CURRENT_TIMESTAMP, 'u002'
+        'pur003', 100, CURRENT_TIMESTAMP, 'u002'
     ),
     (
-        'p004', 250, CURRENT_TIMESTAMP, 'u001'
+        'pur004', 250, CURRENT_TIMESTAMP, 'u001'
     );
 
 ---Selecionando os produtos:
@@ -98,9 +98,10 @@ INSERT INTO
     purchases_products (
         purchase_id, product_id, quantity
     )
-VALUES ('p001', 'prod003', 5),
-    ('p002', 'prod004', 8),
-    ('p003', 'prod002', 3);
+VALUES 
+    ('pur001', 'prod003', 5),
+    ('pur002', 'prod004', 8),
+    ('pur003', 'prod002', 3);
 
 SELECT *
 FROM
@@ -108,3 +109,4 @@ FROM
     INNER JOIN purchases ON purchases_products.purchase_id = purchases.id
     INNER JOIN products ON purchases_products.product_id = products.id
     INNER JOIN users ON users.id = purchases.buyer;
+
