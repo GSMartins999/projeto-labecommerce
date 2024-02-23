@@ -1,4 +1,4 @@
-import { TUser, TProducts } from "./types";
+import { TUser, TProduct } from "./types";
 
 export const users: TUser[] = [
     {
@@ -19,7 +19,7 @@ export const users: TUser[] = [
     
 ]
 
-export const products: TProducts[] = [
+export const products: TProduct[] = [
     {
         id: "prod001",
         name:"Mouse gamer",
