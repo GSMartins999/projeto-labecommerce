@@ -14,6 +14,7 @@ export type TProduct = {
     imageUrl: string
 }
 
+
 export type TPurchase = {
     id: string,
     buyer: string,
