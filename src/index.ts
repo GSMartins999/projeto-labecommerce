@@ -336,6 +336,12 @@ app.put("/products/:id", async (req: Request, res: Response) => {
   });
 
 
+
+
+/////////////////////////Purchases//////////////////////////////////
+
+
+
 //Get all purchases
 app.get("/purchases", async (req: Request, res: Response) => {
     try {
@@ -356,7 +362,7 @@ app.get("/purchases", async (req: Request, res: Response) => {
 
 
 
-  //Get purchases
+  //Get purchases por id
   app.get("/purchases/:id", async (req: Request, res: Response) => {
     try {
       const idToSearch: string = req.params.id;
@@ -403,7 +409,6 @@ app.get("/purchases", async (req: Request, res: Response) => {
 
 
 
-
   //Post purchases
   app.post("/purchases", async (req: Request, res: Response) => {
     try{
@@ -411,19 +416,19 @@ app.get("/purchases", async (req: Request, res: Response) => {
   
       if(!id || !buyer ){
         res.statusCode = 400;
-        throw new Error("'id' - 'buyer' - 'total_price' são obrigatorios, preencha!");
+        throw new Error("'id' - 'buyer' - 'total_price' são obrigatorios, não podem ser omitidos");
       }
       if(typeof id !== "string"){
         res.statusCode = 400;
-        throw new Error("'id' deve ser do tipo string");
+        throw new Error("'id' - deve ser enviado no formato string");
       }
       if(typeof buyer !== "string"){
         res.statusCode = 400;
-        throw new Error("'buyer' deve ser do tipo string");
+        throw new Error("'buyer' - deve ser enviado no formato string");
       }
       if(!products){
         res.statusCode = 400;
-        throw new Error("'products' é obrigatório, preencha!");
+        throw new Error("'products', não pode ser omitido");
       }
       if(!Array.isArray(products)){
         res.statusCode = 400;
@@ -434,7 +439,7 @@ app.get("/purchases", async (req: Request, res: Response) => {
   
       if(idCompra){
         res.statusCode = 400;
-        throw new Error("'id' ja existe, favor conferir os dados");
+        throw new Error("'id' - ja existe, favor conferir os dados");
       }
   
       const idProducts = products.map(async (item) => {
@@ -442,14 +447,14 @@ app.get("/purchases", async (req: Request, res: Response) => {
       });
       const prod = await Promise.all(idProducts);   
   
-      const flatProducts = prod.flat();
+      const flatProducts = prod.flat(); //estabiliza em um unico array de objetos
   
       const totalPrice = flatProducts.reduce((acc, atual)=> acc + atual.price, 0);
   
-      const insertData = flatProducts.map((prod: TProduct)=>({
+      const insertData = flatProducts.map((prd: TProduct)=>({
         purchases_id: id,
-        product_id: prod.id,
-        quantity: products.find((item) => item.id === prod.id)?.quantity || 1
+        product_id: prd.id,
+        quantity: products.find((item) => item.id === prd.id)?.quantity || 1
       }));
   
       await db.insert({
@@ -469,48 +474,46 @@ app.get("/purchases", async (req: Request, res: Response) => {
       });
   
       res.status(200).send("Pedido realizado com sucesso");
-    }catch (error) {
+    }catch (err) {
       if (res.statusCode === 200) {
-        res.status(500);
+        res.statusCode = 500;
       }
-      if (error instanceof Error) {
-        res.send(error.message);
+      if (err instanceof Error) {
+        res.send(err.message);
       } else {
-        res.send("Erro inesperado.");
+        res.send("Erro inesperado");
       }
     }
   });
   
 
-
-
-  //Delete purchase
+  //Delete purchases
   app.delete("/purchases/:id", async (req: Request, res: Response) =>{
     try{
       const idToDelete:string = req.params.id;
       if(!idToDelete){
         res.statusCode = 404;
-        throw new Error("'id' é obrigatório, preencha!");
+        throw new Error("'id' - não pode ser omitido");
       }
   
-      const [compra] = await db("purchases").where({id: idToDelete});
+      const [compra] = await db.select("*").from("purchases").where({id: idToDelete});
   
       if(!compra){
         res.statusCode = 404;
         throw new Error("'id' - compra não existente, verificar 'id'");
       }
   
-      await db("purchases").del().where({id: idToDelete});
+      await db.delete().from("purchases").where({id: idToDelete});
   
-      res.status(200).send("Pedido deletado com sucesso");
-    }catch (error) {
+      res.status(200).send("Pedido cancelado com sucesso");
+    }catch (err) {
       if (res.statusCode === 200) {
-        res.status(500);
+        res.statusCode = 500;
       }
-      if (error instanceof Error) {
-        res.send(error.message);
+      if (err instanceof Error) {
+        res.send(err.message);
       } else {
-        res.send("Erro inesperado.");
+        res.send("Erro inesperado");
       }
     }
   });
